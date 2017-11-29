@@ -1,2 +1,1 @@
-# SptingBoot-Hibernate-JPA-Thymeleaf
-CRUD APP
+# SptingBoot-Hibernate-JPA-Thymeleaf CRUD app using MySQL
