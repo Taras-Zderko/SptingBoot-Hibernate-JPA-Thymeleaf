@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+</head>
+<body>
+<nav th:replace="layout :: header"></nav>
+<div class="container main-content form">
+    <div class="row">
+        <select  class="form-control">
+            <option th:each="contant : ${department}"
+                    th:value="${contant.id}"
+                    th:text="#{${contant.name}}">
+            </option>
+        </select>
+    </div>
+</div>
+</body>
+</html>

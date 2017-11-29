@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+<body>
+<nav th:replace="layout :: header"></nav>
+<div class="container main-content list">
+
+    <div th:if="${success}"
+         class="row alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <span th:text="${success}"></span>
+
+    </div>
+
+    <div class="row">
+        <a th:href="@{/employee/create}" class="btn btn-success pull-left">
+            <span class="glyphicon glyphicon-plus"></span> Add new employee
+        </a>
+        <form class="form-inline pull-right" action="#" th:action="@{/employee/search}" method="GET">
+            <div class="form-group">
+                <input type="text" class="form-control" name="s" placeholder="Type employee name..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <th:block th:if="${#lists.isEmpty(employees)}">
+        <h3>No employee</h3>
+    </th:block>
+
+    <th:block th:unless="${#lists.isEmpty(employees)}">
+        <div class="row">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>EmNum</th>
+                    <th>EmName</th>
+                    <th>EmActive</th>
+                    <th>DpName</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="contant,iterStat : ${employees}">
+                    <td th:text="${contant.id}"></td>
+                    <!--<td th:text="${(((iterStat.index+1)) + ((session.page_number))*(session.page_size))}"></td>-->
+                    <td th:text="${contant.name}"></td>
+                    <td th:text="${contant.active}"></td>
+                    <td th:text="${contant.department.name}"></td>
+
+                    <td><a th:href="@{/employee/{id}/edit(id=${contant.id})}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td><a th:href="@{/employee/{id}/delete(id=${contant.id})}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:fragment='paginationbar'>
+            <ul class='pagination pagination-centered'>
+                <li th:class="${page.firstPage}">
+                    <span th:if='${page.firstPage}'>←</span>
+                    <a th:if='${not page.firstPage}' th:href='@{${page.url}(page=0,size=${page.size})}'>←</a>
+                </li>
+                <li th:class="${page.hasPreviousPage}">
+                    <span th:if='${not page.hasPreviousPage}'>«</span>
+                    <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'>«</a>
+                </li>
+
+                <li th:each='item : ${page.items}' th:class="${item.current}">
+                    <span th:if='${item.current}' th:text='${item.number}'>1</span>
+                    <a th:if='${not item.current}' th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'>
+                        <span th:text='${item.number}'>1</span>
+                    </a>
+                </li>
+                <li th:class="${page.hasNextPage}">
+                    <span th:if='${not page.hasNextPage}'>»</span>
+                    <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page=${page.number},size=${page.size})}'>»</a>
+                </li>
+                <li th:class="${page.lastPage}">
+                    <span th:if='${page.lastPage}'>➝</span>
+                    <a th:if='${not page.lastPage}' th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>➝</a>
+                </li>
+            </ul>
+        </div>
+    </th:block>
+
+</div>
+
+</body>
+</html>
